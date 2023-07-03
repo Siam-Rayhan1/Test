@@ -27,6 +27,13 @@ jobs:
         with:
           path: .buildozer
           key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
+          
+      - name: Update Cython
+        uses: actions/cache@v2
+        id: cython
+        with:
+          command: pip install cython
+
 
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
@@ -34,6 +41,7 @@ jobs:
         with:
           command: buildozer android debug
           buildozer_version: master
+      
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
