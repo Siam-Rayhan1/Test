@@ -27,7 +27,7 @@ jobs:
       - name: Upgrade Cython
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.11.3'
           
 
       - name: Build with Buildozer
