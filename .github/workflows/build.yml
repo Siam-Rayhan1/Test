@@ -27,8 +27,8 @@ jobs:
       - name: Upgrade Cython
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
-          python-version-suffix: '.final'
+          python-version: '3.9.0'
+          
 
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
@@ -36,7 +36,7 @@ jobs:
         with:
           command: buildozer android debug
           buildozer_version: master
-          buildozer_options: "--build-method=cython=old"
+     
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
