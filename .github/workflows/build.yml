@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -10,30 +10,32 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # Install Android SDK and NDK
-      - name: Install Android SDK
+      - name: Get Date
+        id: get-date
         run: |
-          sudo apt update
-          sudo apt install android-sdk
+          echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+        shell: bash
 
-      - name: Install Android NDK
-        run: |
-          sudo apt update
-          sudo apt install android-ndk
-
-      # Cache Buildozer global directory
       - name: Cache Buildozer global directory
         uses: actions/cache@v2
         with:
           path: .buildozer_global
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }} # Replace with your path
+          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
       - uses: actions/cache@v2
         with:
           path: .buildozer
-          key: ${{ runner.os }}-${{ hashFiles('buildozer.spec') }}
+          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
-      # Build with Buildozer
+      - name: Install AIDL
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential
+          sudo apt-get install libstdc++6
+          sudo apt-get install aidl
+          
+
+
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
